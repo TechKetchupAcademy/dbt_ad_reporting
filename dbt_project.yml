@@ -13,6 +13,8 @@ vars:
   microsoft_ads_schema: bing
   microsoft_ads_database: Warehouse
 
+
+vars:
   ad_reporting:
     ad_reporting__account_passthrough_metrics: []
     ad_reporting__campaign_passthrough_metrics: []
