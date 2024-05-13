@@ -14,6 +14,18 @@ vars:
     ad_reporting__keyword_passthrough_metrics: []
     ad_reporting__search_passthrough_metrics: []
     "dbt_date:time_zone": "America/Los_Angeles"
+    ad_reporting__amazon_ads_enabled: False # by default this is assumed to be True
+    ad_reporting__apple_search_ads_enabled: False # by default this is assumed to be True
+    ad_reporting__facebook_ads_enabled: False # by default this is assumed to be True
+    ad_reporting__google_ads_enabled: True # by default this is assumed to be True
+    ad_reporting__linkedin_ads_enabled: False # by default this is assumed to be True
+    ad_reporting__microsoft_ads_enabled: True # by default this is assumed to be True
+    ad_reporting__pinterest_ads_enabled: False # by default this is assumed to be True
+    ad_reporting__reddit_ads_enabled: False # by default this is assumed to be True
+    ad_reporting__snapchat_ads_enabled: False # by default this is assumed to be True
+    ad_reporting__tiktok_ads_enabled: False # by default this is assumed to be True
+    ad_reporting__twitter_ads_enabled: False # by default this is assumed to be True
+
 
 models:
   ad_reporting:
@@ -22,3 +34,13 @@ models:
     intermediate:
       +materialized: ephemeral
       +schema: int_ad_reporting
+
+  google_ads:
+    +schema: google_ads
+  google_ads_source:
+    +schema: google
+
+  microsoft_ads:
+    +schema: bingads
+  microsoft_ads_source:
+    +schema: bing
