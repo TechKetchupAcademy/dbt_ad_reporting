@@ -26,9 +26,9 @@ vars:
     ad_reporting__tiktok_ads_enabled: False # by default this is assumed to be True
     ad_reporting__twitter_ads_enabled: False # by default this is assumed to be True
     google_ads_schema: google
-    google_ads_database: Warehouse
+    google_ads_database: skg-data
     microsoft_ads_schema: bing
-    microsoft_ads_database: Warehouse
+    microsoft_ads_database: skg-data
 
 
 models:
