@@ -5,16 +5,14 @@ config-version: 2
 
 require-dbt-version: [">=1.6.0", "<2.0.0"]
 
-vars:
 
+vars:
   google_ads_schema: google
   google_ads_database: Warehouse
   
   microsoft_ads_schema: bing
   microsoft_ads_database: Warehouse
-
-
-vars:
+  
   ad_reporting:
     ad_reporting__account_passthrough_metrics: []
     ad_reporting__campaign_passthrough_metrics: []
