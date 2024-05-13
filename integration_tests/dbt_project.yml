@@ -10,6 +10,10 @@ dispatch:
   - macro_namespace: dbt_expectations
     search_order: ['google_ads_source', 'dbt_expectations']
 
+flags:
+  send_anonymous_usage_stats: False
+  use_colors: True
+
 vars: 
   
   apple_search_ads__using_search_terms: True
