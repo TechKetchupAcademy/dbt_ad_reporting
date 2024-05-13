@@ -25,6 +25,8 @@ vars:
     ad_reporting__snapchat_ads_enabled: False # by default this is assumed to be True
     ad_reporting__tiktok_ads_enabled: False # by default this is assumed to be True
     ad_reporting__twitter_ads_enabled: False # by default this is assumed to be True
+    google_ads_schema: google
+    microsoft_ads_schema: bing
 
 
 models:
