@@ -41,6 +41,6 @@ models:
     +schema: google
 
   microsoft_ads:
-    +schema: bingads
+    +schema: bing_ads
   microsoft_ads_source:
     +schema: bing
