@@ -34,3 +34,13 @@ models:
     intermediate:
       +materialized: ephemeral
       +schema: int_ad_reporting
+
+  google_ads:
+    +schema: google
+  google_ads_source:
+    +schema: google_source
+
+  microsoft_ads:
+    +schema: bing
+  microsoft_ads_source:
+    +schema: bing_source
