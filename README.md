@@ -1,6 +1,6 @@
 <p align="center">
     <a alt="License"
-        href="https://github.com/fivetran/dbt_github/blob/main/LICENSE">
+        href="https://github.com/fivetran/dbt_ad_reporting/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
     <a alt="dbt-core">
         <img src="https://img.shields.io/badge/dbt_Core™_version->=1.6.0_<2.0.0-orange.svg" /></a>
@@ -28,6 +28,7 @@
 > NOTE: You do _not_ need to have all of these connector types to use this package, though you should have at least two.
 - Generates a comprehensive data dictionary of your source and modeled Ad Reporting data via the [dbt docs site](https://fivetran.github.io/dbt_ad_reporting/)
 
+<!--section="ad_reporting_transformation_model"-->
 Refer to the table below for a detailed view of final models materialized by default within this package. Additionally, check out our [Docs site](https://fivetran.github.io/dbt_ad_reporting/#!/overview) for more details about these models. 
 
 | **model**                  | **description**                                                                                                                                               |
@@ -41,6 +42,8 @@ Refer to the table below for a detailed view of final models materialized by def
 | [ad_reporting__url_report](https://fivetran.github.io/dbt_ad_reporting/#!/model/model.ad_reporting.ad_reporting__url_report) | Each record represents daily metrics by URL (and if applicable, URL UTM parameters), ad group, campaign and account.                        |
 
 > The individual platform models may have additional platform-specific metrics and fields better suited for deep-dive analyses at the platform level.
+
+<!--section-end-->
 
 # 🎯 How do I use the dbt package?
 ## Step 1: Pre-Requisites
@@ -77,7 +80,7 @@ Include the following github package version in your `packages.yml`
 ```yaml
 packages:
   - package: fivetran/ad_reporting
-    version: [">=1.7.0", "<1.8.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.9.0", "<1.10.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 Do NOT include the individual ad platform packages in this file. The ad reporting package itself has dependencies on these packages and will install them as well.
@@ -480,7 +483,7 @@ vars:
 ```
 
 ### Change the source table references
-If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
+If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable. This is not available for sources in which you are unioning together multiple connectors.
 > IMPORTANT: See the Apple Store [`dbt_project.yml`](https://github.com/fivetran/dbt_apple_store_source/blob/main/dbt_project.yml)  and Google Play [`dbt_project.yml`](https://github.com/fivetran/dbt_google_play_source/blob/main/dbt_project.yml) variable declarations to see the expected names.
     
 ```yml
@@ -577,10 +580,10 @@ packages:
     version: [">=0.7.0", "<0.8.0"]
   
   - package: fivetran/google_ads
-    version: [">=0.10.0", "<0.11.0"]
+    version: [">=0.11.0", "<0.12.0"]
 
   - package: fivetran/google_ads_source
-    version: [">=0.10.0", "<0.11.0"]
+    version: [">=0.11.0", "<0.12.0"]
 
   - package: fivetran/pinterest
     version: [">=0.10.0", "<0.11.0"]
@@ -589,16 +592,16 @@ packages:
     version: [">=0.10.0", "<0.11.0"]
 
   - package: fivetran/microsoft_ads
-    version: [">=0.7.0", "<0.8.0"]
+    version: [">=0.8.0", "<0.9.0"]
 
   - package: fivetran/microsoft_ads_source
-    version: [">=0.8.0", "<0.9.0"]
+    version: [">=0.9.0", "<0.10.0"]
 
   - package: fivetran/linkedin
-    version: [">=0.8.0", "<0.9.0"]
+    version: [">=0.9.0", "<0.10.0"]
 
   - package: fivetran/linkedin_source
-    version: [">=0.8.0", "<0.9.0"]
+    version: [">=0.9.0", "<0.10.0"]
 
   - package: fivetran/reddit_ads
     version: [">=0.2.0", "<0.3.0"]
@@ -639,4 +642,3 @@ We highly encourage and welcome contributions to this package. Check out [this p
 # 🏪 Are there any resources available?
 - If you encounter any questions or want to reach out for help, please refer to the [GitHub Issue](https://github.com/fivetran/dbt_ad_reporting/issues/new/choose) section to find the right avenue of support for you.
 - If you would like to provide feedback to the dbt package team at Fivetran, or would like to request a future dbt package to be developed, then feel free to fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
-- Have questions or want to be part of the community discourse? Create a post in the [Fivetran community](https://community.fivetran.com/t5/user-group-for-dbt/gh-p/dbt-user-group) and our team along with the community can join in on the discussion!

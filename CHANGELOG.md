@@ -1,3 +1,24 @@
+# dbt_ad_reporting v1.9.0
+
+## Under the Hood
+- Addition of an blank line between the quoted line and the comment.
+
+## Under the Hood
+- Addition of a section tag within the README so the model descriptions may be accessible within the Fivetran UI for Quickstart. ([PR #113](https://github.com/fivetran/dbt_ad_reporting/pull/113))
+- Upticked the `google_ads` and `linkedin_ads` dependencies following major releases in both packages in which conversion metrics have been added. Refer to the individual package release notes for more details ([Google Ads](https://github.com/fivetran/dbt_google_ads/releases/tag/v0.11.0), [Linkedin Ads](https://github.com/fivetran/dbt_linkedin/releases/tag/v0.9.0)). ([PR #115](https://github.com/fivetran/dbt_ad_reporting/pull/115))
+  - Note: Default conversions have not been added to `ad_reporting` models _yet_, as we are rolling out conversion support to all upstream Ad packages first.
+
+## Contributors
+- [Seer Interactive](https://www.seerinteractive.com/?utm_campaign=Fivetran%20%7C%20Models&utm_source=Fivetran&utm_medium=Fivetran%20Documentation)
+- [@fivetran-poonamagate](https://github.com/fivetran-poonamagate) ([PR #59](https://github.com/fivetran/dbt_google_ads_source/pull/59))
+
+# dbt_ad_reporting v1.8.0
+
+[PR #112](https://github.com/fivetran/dbt_ad_reporting/pull/112) includes the following update:
+
+## Dependency Updates
+- Tiny update which upticks the `microsoft_ads` dependency following a recent major release. Refer to the Microsoft Ads v0.8.0 [release notes](https://github.com/fivetran/dbt_microsoft_ads/releases/tag/v0.8.0) for what exact updates have been included.
+
 # dbt_ad_reporting v1.7.1
 ## Bug Fixes
 - Adjust the severity of the `account_id` test in `ad_reporting__account_report` to `warn`. This is required since Snapchat can hard-delete records from the history tables, but not from the reporting tables. This ensures that accurate statistics are being reported and production pipelines aren't failing. ([PR #20](https://github.com/fivetran/dbt_snapchat_ads/pull/20))
