@@ -1,3 +1,65 @@
+# dbt_ad_reporting version.version
+
+## Documentation
+- Added Quickstart model counts to README. ([#130](https://github.com/fivetran/dbt_ad_reporting/pull/130))
+- Corrected references to connectors and connections in the README. ([#130](https://github.com/fivetran/dbt_ad_reporting/pull/130))
+- Updated the [DECISIONLOG](https://github.com/fivetran/dbt_ad_reporting/blob/main/DECISIONLOG.md#timezone-considerations) and [README](https://github.com/fivetran/dbt_ad_reporting/blob/main/README.md#timezone-considerations) to include details about timezone differences across ad platforms. ([#131](https://github.com/fivetran/dbt_ad_reporting/pull/131))
+
+# dbt_ad_reporting v1.11.0
+
+## Breaking Changes
+
+### LinkedIn Ads
+- The `dbt_linkedin` dependency has been updated to `[">=0.10.0", "<0.11.0"]`, and the `dbt_linkedin_source` dependency has been updated to `[">=0.10.0", "<0.11.0"]`. These upstream versions introduce breaking changes. For details, refer to the [dbt_linkedin_source v0.10.0](https://github.com/fivetran/dbt_linkedin_source/releases/tag/v0.10.0) and [dbt_linkedin v0.10.0](https://github.com/fivetran/dbt_linkedin/releases/tag/v0.10.0) release notes. ([PR #120](https://github.com/fivetran/dbt_ad_reporting/pull/120))
+  - Added the `click_uri_type` field to the following models. This field allows users to differentiate which click uri type (`text_ad` or `spotlight`) was used to populate the `click_uri` field.
+    - `stg_linkedin_ads__creative_history`
+    - `linkedin_ads__creative_report`
+    - `linkedin_ads__url_report`
+    - Note: Only `text_ad` and `spotlight` click URI types are supported. To request support for additional types, submit a [Feature Request](https://github.com/fivetran/dbt_linkedin_source/issues/70).
+  - The `click_uri` field now populates values using a `COALESCE` of `text_ad_landing_page`, `spotlight_landing_page`, and `click_uri`. For details, refer to the [dbt_linkedin_source v0.10.0](https://github.com/fivetran/dbt_linkedin_source/releases/tag/v0.10.0) release notes. ([PR #120](https://github.com/fivetran/dbt_ad_reporting/pull/120))
+    - This change aligns with the [LinkedIn Ads API migration](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/contentapi-migration-guide?view=li-lms-2024-05#adcreativesv2-api-creatives-api) and [Fivetran LinkedIn Ads connector update](https://fivetran.com/docs/connectors/applications/linkedin-ads/changelog#january2024), which moved `click_uri` data to `text_ad_landing_page` or `spotlight_landing_page` based on creative type.
+
+### TikTok Ads
+- The `dbt_tiktok_ads` dependency has been updated to `[">=0.7.0", "<0.8.0"]`, and the `dbt_tiktok_source` dependency has been updated to `[">=0.7.0", "<0.8.0"]`. These upstream versions introduce breaking changes. For details, refer to the [dbt_tiktok_ads_source v0.7.0](https://github.com/fivetran/dbt_tiktok_ads_source/releases/tag/v0.7.0) and [dbt_tiktok_ads v0.7.0](https://github.com/fivetran/dbt_tiktok_ads/releases/tag/v0.10.0) release notes. ([PR #127](https://github.com/fivetran/dbt_ad_reporting/pull/127))
+- The `age` column in the `ADGROUP_HISTORY` table was renamed to `age_groups` in the [July 2023 TikTok update](https://fivetran.com/docs/connectors/applications/tiktok-ads/changelog#july2023). ([PR #127](https://github.com/fivetran/dbt_ad_reporting/pull/127))
+  - Previously, the `stg_tiktok_ads__ad_group_history` model coalesced `age` and `age_groups` to handle legacy data. Due to incompatible data types (string and JSON), this coalesced field has been removed in favor of solely the `age_groups` column.
+  - To populate historical data in the `age_groups` column, perform a resync of the `ADGROUP_HISTORY` table. TikTok provides all data regardless of the previous sync state.
+  - For more details, see the [Tiktok Ads DECISIONLOG](https://github.com/fivetran/dbt_tiktok_ads_source/blob/main/DECISIONLOG.md).
+
+## Documentation Changes
+- Improved README structure by moving the Ad Reporting heading above the README tags and aligning it to the left. ([PR #124](https://github.com/fivetran/dbt_ad_reporting/pull/124))
+
+## Under the Hood
+- Added consistency validation tests for the following models to enhance integration testing (used internally by Fivetran maintainers) ([PR #127](https://github.com/fivetran/dbt_ad_reporting/pull/127)):
+  - `ad_reporting__ad_report`
+  - `ad_reporting__url_report`
+
+## Contributors
+- [@conrad-mal](https://github.com/conrad-mal) ([PR #124](https://github.com/fivetran/dbt_ad_reporting/pull/124))
+
+# dbt_ad_reporting v1.10.0
+[PR #122](https://github.com/fivetran/dbt_ad_reporting/pull/122) introduces the following **BREAKING CHANGES:**
+
+## Feature Updates: Native Conversion Support
+- Added `conversions` and `conversions_value` fields to each Ad Reporting end model.
+  - **BREAKING**: In the event that you were already including conversions through [passthrough variables](https://github.com/fivetran/dbt_ad_reporting?tab=readme-ov-file#adding-custom-metrics-to-final-reports) and called your field(s) `conversions` and/or `conversions_value`, your old fields will still be included, but they will be suffixed with a `_c`, while the new default conversion fields will take precedence as `conversions` and `conversions_value`
+  - For some platforms, conversions data is sent along with the type of event the metrics are attributed to (ie purchases, leads, sign ups). We have largely chosen to consider **purchases, leads, and custom-defined** events to be conversions. However, you may configure this at each individual platform level for the following packages:
+
+| Platform    | Variable | Default Values | How to Use |
+| ------------ | ----------- | -------- | ---------- |
+| Facebook Ads    | `facebook_ads__conversion_action_types`    |  `offsite_conversion.fb_pixel_custom` + `offsite_conversion.fb_pixel_lead` + `onsite_conversion.lead_grouped` + `offsite_conversion.fb_pixel_purchase` + `onsite_conversion.purchase` | [Configuring Conversion Action Types](https://github.com/fivetran/dbt_facebook_ads?tab=readme-ov-file#configuring-conversion-action-types) |
+| LinkedIn Ad Analytics   | `linkedin_ads__conversion_fields`   | `external_website_conversions` + `one_click_leads` | [Adding in Conversion Fields](https://github.com/fivetran/dbt_linkedin?tab=readme-ov-file#adding-in-conversion-fields-variable) |
+| Reddit Ads      | `reddit_ads__conversion_event_types` | `lead` + `purchase` + `custom` | [Configure Conversion Event Types](https://github.com/fivetran/dbt_reddit_ads?tab=readme-ov-file#configure-conversion-event-types) |
+| Snapchat Ads    | `snapchat_ads__conversion_fields`    | `conversion_purchases` | [Configuring Conversion Fields](https://github.com/fivetran/dbt_snapchat_ads?tab=readme-ov-file#configuring-conversion-fields) |
+| Twitter Ads     | `twitter_ads__conversion_fields` AND `twitter_ads__conversion_sale_amount_fields` | `conversion_purchases_metric` + `conversion_custom_metric` AND `conversion_purchases_sale_amount` + `conversion_custom_sale_amount` | [Customizing Types of Conversions](https://github.com/fivetran/dbt_twitter?tab=readme-ov-file#customizing-types-of-conversions) |
+
+## Under the Hood
+- Created data validation tests to be used by package maintainers to verify this and future releases.
+
+## Contributors
+- [Seer Interactive](https://www.seerinteractive.com/?utm_campaign=Fivetran%20%7C%20Models&utm_source=Fivetran&utm_medium=Fivetran%20Documentation)
+- [@fivetran-poonamagate](https://github.com/fivetran-poonamagate) ([PR #59](https://github.com/fivetran/dbt_google_ads_source/pull/59))
+
 # dbt_ad_reporting v1.9.0
 
 ## Under the Hood
